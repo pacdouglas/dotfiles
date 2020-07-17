@@ -22,7 +22,21 @@ function extract () {
                         *.Z)                uncompress $1        ;;
                         *)                        echo "'$1' cannot be extracted via extract()" ;;
                 esac
-                else
-                        echo "'$1' is not a valid file"
+        else
+                echo "'$1' is not a valid file"
         fi
+}
+
+mvn_changed_modules(){
+    [ -z "$1" ] && echo "Expected command : mvn_changed_modules (install/build/clean or any maven command)" && exit 0
+
+        modules=$(git status | grep -E "modified:|deleted:|added:" | awk '{print $2}' | cut -f1 -d"/")
+
+                if [  -z "$modules" ];
+                then
+                        echo "No changes (modified / deleted / added)  found"
+                else
+                        echo "Changed modules are : `echo $modules`"
+                        mvn $1 -amd -pl $modules
+                fi
 }
