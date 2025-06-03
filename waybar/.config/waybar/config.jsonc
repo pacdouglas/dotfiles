@@ -35,7 +35,10 @@
       "format-icons": {
           "default": ["", "", " "]
       },
-      "on-click": "pavucontrol"
+      "on-click": "~/.config/scripts/audio-switcher.sh toggle",
+    "on-click-right": "~/.config/scripts/audio-switcher.sh menu",
+    "on-click-middle": "pavucontrol",
+    "tooltip-format": "Volume: {volume}%\nClick: Toggle output\nRight-click: Menu\nMiddle-click: Audio control"
   },
   "tray": {
     "icon-size": 21,
