@@ -194,3 +194,7 @@ dsize() {
 }
 
 export PATH="$HOME/.local/bin:$PATH"
+
+export ASDF_DATA_DIR="/opt/tools/asdf"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
