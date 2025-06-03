@@ -192,3 +192,5 @@ hgrep() {
 dsize() {
     du -sh * | sort -h
 }
+
+export PATH="$HOME/.local/bin:$PATH"
