@@ -159,7 +159,7 @@ require("lazy").setup({
       })
 
       local lspconfig = require("lspconfig")
-      
+
       -- Setup language servers
       lspconfig.lua_ls.setup({})
       lspconfig.pyright.setup({})
@@ -269,6 +269,8 @@ require("lazy").setup({
 -- ==========================================
 
 local keymap = vim.keymap.set
+-- CTRL + Backspace to delete the previous word
+keymap("i", "<C-H>", "<C-w>", { desc = "Delete previous word (alternative)" })
 
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h")

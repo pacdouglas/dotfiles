@@ -1,14 +1,21 @@
 eval "$(starship init zsh)"
 
-# History configuration
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_IGNORE_SPACE
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_VERIFY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_FIND_NO_DUPS
+
+# History configuration
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
 
 # General settings
 setopt AUTO_CD             # automatic cd
@@ -27,7 +34,7 @@ bindkey -e
 # CTRL + Backspace: delete previous word
 bindkey '^H' backward-kill-word
 
-# CTRL + Delete: delete next word  
+# CTRL + Delete: delete next word
 bindkey '^[[3;5~' kill-word
 
 # CTRL + Left Arrow: move word backward
@@ -110,7 +117,7 @@ alias lh='ls -lah'
 
 # Colored commands
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto' 
+alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 

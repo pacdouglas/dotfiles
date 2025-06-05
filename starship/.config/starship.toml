@@ -19,12 +19,9 @@ $java\
 $kotlin\
 $haskell\
 $python\
-[](fg:teal bg:blue)\
 $docker_context\
-[](fg:blue bg:purple)\
-$time\
-[ ](fg:purple)\
-$line_break$character"""
+$cmd_duration
+$character"""
 
 palette = 'catppuccin_mocha'
 
@@ -171,12 +168,6 @@ symbol = ""
 style = "bg:mantle"
 format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
 
-[time]
-disabled = false
-time_format = "%R"
-style = "bg:peach"
-format = '[[  $time ](fg:mantle bg:purple)]($style)'
-
 [line_break]
 disabled = false
 
@@ -188,3 +179,9 @@ vimcmd_symbol = '[](bold fg:creen)'
 vimcmd_replace_one_symbol = '[](bold fg:purple)'
 vimcmd_replace_symbol = '[](bold fg:purple)'
 vimcmd_visual_symbol = '[](bold fg:lavender)'
+
+[cmd_duration]
+min_time = 100
+show_milliseconds = true
+style = "bold"
+format = '[[ 󱎫 $duration ](fg:white bg:black)]($style)'

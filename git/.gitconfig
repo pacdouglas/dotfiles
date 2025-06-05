@@ -13,10 +13,10 @@
 	pushit = push -u origin HEAD
 	pushf = push -f
     	glog = !"git --no-pager log --all --color=always --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' | less -r -X +/[^/]HEAD"
-[includeIf "gitdir:~/git/"]
-    path = ~/.gitconfig-work
 [includeIf "gitdir:~/"]
     path = ~/.gitconfig-personal
+[includeIf "gitdir:~/git/**"]
+    path = ~/.gitconfig-work
 [push]
 	default = simple
 [gui]
