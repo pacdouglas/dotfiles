@@ -159,6 +159,8 @@ elif [[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 fi
 
+source <(fzf --zsh)
+
 # ==========================================
 # USEFUL FUNCTIONS
 # ==========================================
@@ -204,4 +206,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export ASDF_DATA_DIR="/opt/tools/asdf"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
+export FILEMANAGER=thunar
+export GTK_USE_PORTAL=0
