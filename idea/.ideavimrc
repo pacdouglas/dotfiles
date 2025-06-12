@@ -1,0 +1,190 @@
+" ==========================================
+" IDEAVIMRC BASED ON NEOVIM CONFIG
+" 100% Vim in INSERT mode, 100% IntelliJ in NORMAL mode
+" ==========================================
+
+" ==========================================
+" BASIC SETTINGS (from init.lua)
+" ==========================================
+let mapleader = " "
+let maplocalleader = "\\"
+
+set number
+set relativenumber
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set scrolloff=8
+set sidescrolloff=8
+set timeoutlen=500
+set clipboard+=unnamed
+set clipboard+=ideaput
+
+" IdeaVim specific settings
+set ideajoin
+set ideastatusicon=gray
+set ideamarks
+
+" ==========================================
+" MODAL HANDLER CONFIGURATION
+" NORMAL mode = IntelliJ shortcuts
+" INSERT mode = Vim shortcuts
+" ==========================================
+
+sethandler <C-A> n:ide i:vim
+sethandler <C-B> n:ide i:vim
+sethandler <C-D> n:ide i:vim
+sethandler <C-E> n:ide i:vim
+sethandler <C-F> n:ide i:vim
+sethandler <C-G> n:ide i:vim
+sethandler <C-H> n:ide i:vim
+sethandler <C-I> n:ide i:vim
+sethandler <C-J> n:ide i:vim
+sethandler <C-K> n:ide i:vim
+sethandler <C-L> n:ide i:vim
+sethandler <C-M> n:ide i:vim
+sethandler <C-N> n:ide i:vim
+sethandler <C-O> n:ide i:vim
+sethandler <C-P> n:ide i:vim
+sethandler <C-Q> n:ide i:vim
+sethandler <C-R> n:ide i:vim
+sethandler <C-S> n:ide i:vim
+sethandler <C-T> n:ide i:vim
+sethandler <C-U> n:ide i:vim
+sethandler <C-V> n:ide i:vim
+sethandler <C-W> n:ide i:vim
+sethandler <C-X> n:ide i:vim
+sethandler <C-Y> n:ide i:vim
+sethandler <C-Z> n:ide i:vim
+
+" ==========================================
+" IDEAVIM PLUGINS
+" ==========================================
+set surround
+set commentary
+set multiple-cursors
+set argtextobj
+set easymotion
+set textobj-entire
+set ReplaceWithRegister
+
+" ==========================================
+" INSERT MODE - VIM BEHAVIOR
+" Note: Ctrl+O in insert mode works natively (execute one normal command)
+" ==========================================
+
+" Basic navigation in insert mode
+inoremap <C-A> <C-O>I
+inoremap <C-E> <C-O>A
+inoremap <C-B> <C-O>h
+inoremap <C-F> <C-O>l
+inoremap <C-N> <C-O>j
+inoremap <C-P> <C-O>k
+
+" Word movement in insert mode
+inoremap <A-f> <C-O>w
+inoremap <A-b> <C-O>b
+inoremap <A-e> <C-O>e
+
+" Deletion in insert mode
+inoremap <C-H> <BS>
+inoremap <C-W> <C-O>db
+inoremap <C-U> <C-O>d0
+inoremap <C-K> <C-O>D
+inoremap <C-D> <Del>
+
+" Navigation helpers for brackets
+inoremap <C-]> <C-O>f)
+inoremap <C-\> <C-O>f}
+
+" Quick escape
+inoremap jk <Esc>
+inoremap kj <Esc>
+
+" ==========================================
+" NORMAL MODE - LEADER KEY MAPPINGS
+" ==========================================
+
+" Telescope equivalents
+nnoremap <leader>ff <Action>(GotoFile)
+nnoremap <leader>fg <Action>(FindInPath)
+nnoremap <leader>fb <Action>(RecentFiles)
+nnoremap <leader>fh <Action>(GotoAction)
+
+" Project navigation
+nnoremap <leader>e <Action>(ActivateProjectToolWindow)
+
+" Buffer navigation
+nnoremap <S-l> <Action>(NextTab)
+nnoremap <S-h> <Action>(PreviousTab)
+
+" Clear search highlighting
+nnoremap <leader>h :nohlsearch<CR>
+
+" Window navigation
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+" LSP keymaps
+nnoremap gd <Action>(GotoDeclaration)
+nnoremap K <Action>(QuickJavaDoc)
+nnoremap gi <Action>(GotoImplementation)
+nnoremap gr <Action>(FindUsages)
+nnoremap <leader>rn <Action>(RenameElement)
+nnoremap <leader>ca <Action>(ShowIntentionActions)
+
+" Kotlin specific
+nnoremap <leader>kb <Action>(CompileProject)
+nnoremap <leader>kr <Action>(Run)
+nnoremap <leader>kt <Action>(RunClass)
+nnoremap <leader>kd <Action>(Debug)
+
+" Git integration
+nnoremap <leader>gs <Action>(Vcs.Show.Local.Changes)
+nnoremap <leader>gc <Action>(CheckinProject)
+nnoremap <leader>gp <Action>(Vcs.Push)
+nnoremap <leader>gb <Action>(Git.Branches)
+
+" Debugging
+nnoremap <leader>db <Action>(ToggleLineBreakpoint)
+nnoremap <leader>dr <Action>(Resume)
+nnoremap <leader>ds <Action>(StepOver)
+nnoremap <leader>di <Action>(StepInto)
+nnoremap <leader>do <Action>(StepOut)
+
+" Refactoring
+nnoremap <leader>rf <Action>(ReformatCode)
+nnoremap <leader>ro <Action>(OptimizeImports)
+nnoremap <leader>re <Action>(ExtractMethod)
+nnoremap <leader>rv <Action>(ExtractVariable)
+
+" Terminal and splits
+nnoremap <leader>t <Action>(ActivateTerminalToolWindow)
+nnoremap <leader>v <Action>(SplitVertically)
+nnoremap <leader>s <Action>(SplitHorizontally)
+nnoremap <leader>q <Action>(Unsplit)
+
+" ==========================================
+" VISUAL MODE ENHANCEMENTS
+" ==========================================
+vnoremap < <gv
+vnoremap > >gv
+
+" Move lines
+nnoremap <A-j> <Action>(MoveLineDown)
+nnoremap <A-k> <Action>(MoveLineUp)
+vnoremap <A-j> <Action>(MoveLineDown)
+vnoremap <A-k> <Action>(MoveLineUp)
+
+" ==========================================
+" ECLIPSE SHORTCUTS WITH LEADER (OPTIONAL)
+" ==========================================
+nnoremap <leader>er <Action>(RecentFiles)
+nnoremap <leader>or <Action>(GotoFile)
+nnoremap <leader>sh <Action>(FindInPath)
+nnoremap <leader>gt <Action>(GotoClass)
+nnoremap <leader>so <Action>(FileStructurePopup)
+nnoremap <leader>qf <Action>(ShowIntentionActions)
