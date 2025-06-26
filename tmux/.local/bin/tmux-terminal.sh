@@ -25,7 +25,7 @@ restore_geometry() {
         local saved_geometry=$(cat "$GEOMETRY_FILE")
         if [[ -n "$saved_geometry" ]]; then
             IFS=',' read -r x y width height <<< "$saved_geometry"
-
+            
             # Restore position and size
             hyprctl dispatch movewindowpixel exact $x $y,address:$window_address
             hyprctl dispatch resizewindowpixel exact $width $height,address:$window_address
@@ -40,7 +40,7 @@ if [[ -n "$tmux_window" ]]; then
     # If exists, check if it's in the current workspace
     current_workspace=$(hyprctl activeworkspace -j | jq -r '.id')
     window_workspace=$(hyprctl clients -j | jq -r '.[] | select(.address == "'$tmux_window'") | .workspace.id')
-
+    
     if [[ "$window_workspace" == "$current_workspace" ]]; then
         # If it's in current workspace, save geometry and close
         save_geometry "$tmux_window"
@@ -50,7 +50,7 @@ if [[ -n "$tmux_window" ]]; then
         # If it's in another workspace, pull it here and restore geometry
         hyprctl dispatch movetoworkspace $current_workspace,address:$tmux_window
         hyprctl dispatch focuswindow address:$tmux_window
-
+        
         # Small delay to ensure window is moved before restoring geometry
         sleep 0.1
         restore_geometry "$tmux_window"
@@ -61,13 +61,13 @@ else
     if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
         tmux new-session -d -s "$SESSION_NAME"
     fi
-
+    
     # Open kitty connecting to tmux session
     kitty -o confirm_os_window_close=0 tmux attach-session -t "$SESSION_NAME" &
-
+    
     # Wait for window to appear and then restore geometry
     sleep 0.3
-
+    
     # Find the new window and restore its geometry
     new_window=$(hyprctl clients -j | jq -r '.[] | select(.title | contains("'$SESSION_NAME'")) | .address' | head -1)
     if [[ -n "$new_window" ]]; then
