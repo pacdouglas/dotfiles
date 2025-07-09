@@ -137,10 +137,7 @@ require("lazy").setup({
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup({
-        ensure_installed = { 
-          "lua", "vim", "vimdoc", "javascript", "python", "bash",
-          "rust", "toml"  -- ADDED: Rust support
-        },
+        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "python", "bash" },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -158,10 +155,7 @@ require("lazy").setup({
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { 
-          "lua_ls", "pyright", "bashls",
-          "rust_analyzer"  -- ADDED: Rust LSP
-        },
+        ensure_installed = { "lua_ls", "pyright", "bashls" },
       })
 
       local lspconfig = require("lspconfig")
@@ -170,58 +164,6 @@ require("lazy").setup({
       lspconfig.lua_ls.setup({})
       lspconfig.pyright.setup({})
       lspconfig.bashls.setup({})
-      
-      -- ADDED: Rust analyzer setup
-      lspconfig.rust_analyzer.setup({
-        settings = {
-          ["rust-analyzer"] = {
-            cargo = {
-              allFeatures = true,
-            },
-            checkOnSave = {
-              command = "clippy",
-            },
-          },
-        },
-      })
-    end,
-  },
-
-  -- ADDED: Rustaceanvim - Modern Rust plugin
-  {
-    'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
-    lazy = false, -- This plugin is already lazy
-    ft = { "rust" },
-    config = function()
-      vim.g.rustaceanvim = {
-        tools = {
-          hover_actions = {
-            auto_focus = true,
-          },
-        },
-        server = {
-          on_attach = function(client, bufnr)
-            -- Custom keymaps for Rust
-            vim.keymap.set("n", "<leader>ca", function()
-              vim.cmd.RustLsp('codeAction')
-            end, { desc = "Code Action", buffer = bufnr })
-            
-            vim.keymap.set("n", "<leader>dr", function()
-              vim.cmd.RustLsp('debuggables')
-            end, { desc = "Rust Debuggables", buffer = bufnr })
-          end,
-        },
-      }
-    end
-  },
-
-  -- ADDED: Crates.nvim - Cargo.toml dependency management
-  {
-    'saecki/crates.nvim',
-    tag = 'stable',
-    config = function()
-      require('crates').setup()
     end,
   },
 
@@ -352,12 +294,6 @@ keymap("n", "<S-h>", "<cmd>bprevious<cr>")
 -- Clear search highlighting
 keymap("n", "<leader>h", "<cmd>nohlsearch<cr>")
 
--- ADDED: Rust-specific keymaps
-keymap("n", "<leader>rr", "<cmd>RustLsp run<cr>", { desc = "Rust Run" })
-keymap("n", "<leader>rt", "<cmd>RustLsp testables<cr>", { desc = "Rust Test" })
-keymap("n", "<leader>rd", "<cmd>RustLsp debuggables<cr>", { desc = "Rust Debug" })
-keymap("n", "<leader>rc", "<cmd>RustLsp openCargo<cr>", { desc = "Open Cargo.toml" })
-
 -- ==========================================
 -- AUTO COMMANDS
 -- ==========================================
@@ -389,10 +325,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- ADDED: Rust-specific autocmds
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "rust",
-  callback = function()
-    vim.opt_local.colorcolumn = "100"
-  end,
-})
