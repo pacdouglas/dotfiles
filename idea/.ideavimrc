@@ -20,6 +20,7 @@ set sidescrolloff=8
 set timeoutlen=500
 set clipboard+=unnamed
 set clipboard+=ideaput
+set mouse=
 
 " IdeaVim specific settings
 set ideajoin

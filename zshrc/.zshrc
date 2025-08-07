@@ -203,9 +203,13 @@ dsize() {
 }
 
 export PATH="$HOME/.local/bin:$PATH"
-
 export ASDF_DATA_DIR="/opt/tools/asdf"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
 export FILEMANAGER=thunar
 export GTK_USE_PORTAL=0
+
+# append completions to fpath
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
