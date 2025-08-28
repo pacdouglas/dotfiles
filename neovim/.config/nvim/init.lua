@@ -82,7 +82,36 @@ vim.opt.rtp:prepend(lazypath)
 -- ==========================================
 
 require("lazy").setup({
+	{
+		"akinsho/bufferline.nvim",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("bufferline").setup({
+				options = {
+					numbers = "none",
+					close_command = "bdelete! %d",
+					right_mouse_command = "bdelete! %d",
+					left_trunc_marker = "<",
+					right_trunc_marker = ">",
+					max_name_length = 30,
+					max_prefix_length = 30,
+					tab_size = 21,
+					show_buffer_close_icons = true,
+					show_close_icon = false,
+					enforce_regular_tabs = false,
+					always_show_bufferline = true,
+					diagnostics = "nvim_lsp",
 
+					-- filtro para não mostrar buffers "No Name"
+					custom_filter = function(buf_number, buf_numbers)
+						local name = vim.api.nvim_buf_get_name(buf_number)
+						-- retorna true apenas se o buffer tiver nome
+						return name ~= ""
+					end,
+				},
+			})
+		end,
+	},
 	-- Theme (kept)
 	{
 		"catppuccin/nvim",
