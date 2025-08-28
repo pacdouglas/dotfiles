@@ -1,10 +1,17 @@
 " ==========================================
-" IDEAVIMRC BASED ON NEOVIM CONFIG
-" 100% Vim in INSERT mode, 100% IntelliJ in NORMAL mode
+" IDEAVIMRC UPDATED FOR NEOVIM KEYMAP MIRRORING
+" Aligns with your init.lua - Uses Neovim-style shortcuts but directs to IntelliJ actions
+" Focus: Train Neovim muscle memory while in IntelliJ (Kotlin work)
+" - Keeps existing structure
+" - Adds/adjusts mappings to match init.lua where possible
+" - LSP, navigation, etc. mirrored
+" - Go-specific (like err handling) kept as Vim for personal consistency, but Kotlin overrides possible
+" - Testing/Debugging aligned to Neovim keys (adjusted for IntelliJ actions)
+" - Added equivalents for Telescope symbols, diagnostics, etc.
 " ==========================================
 
 " ==========================================
-" BASIC SETTINGS (from init.lua)
+" BASIC SETTINGS (mirrored from init.lua)
 " ==========================================
 let mapleader = " "
 let maplocalleader = "\\"
@@ -20,17 +27,16 @@ set sidescrolloff=8
 set timeoutlen=500
 set clipboard+=unnamed
 set clipboard+=ideaput
-set mouse=
 
-" IdeaVim specific settings
+" IdeaVim specific
 set ideajoin
 set ideastatusicon=gray
 set ideamarks
 
 " ==========================================
 " MODAL HANDLER CONFIGURATION
-" NORMAL mode = IntelliJ shortcuts
-" INSERT mode = Vim shortcuts
+" NORMAL mode = IntelliJ shortcuts (where applicable)
+" INSERT mode = Vim shortcuts (mirrored)
 " ==========================================
 
 sethandler <C-A> n:ide i:vim
@@ -60,7 +66,7 @@ sethandler <C-Y> n:ide i:vim
 sethandler <C-Z> n:ide i:vim
 
 " ==========================================
-" IDEAVIM PLUGINS
+" IDEAVIM PLUGINS (kept + added for consistency)
 " ==========================================
 set surround
 set commentary
@@ -71,11 +77,10 @@ set textobj-entire
 set ReplaceWithRegister
 
 " ==========================================
-" INSERT MODE - VIM BEHAVIOR
-" Note: Ctrl+O in insert mode works natively (execute one normal command)
+" INSERT MODE - VIM BEHAVIOR (mirrored from .ideavimrc + init.lua adjustments)
 " ==========================================
 
-" Basic navigation in insert mode
+" Basic navigation
 inoremap <C-A> <C-O>I
 inoremap <C-E> <C-O>A
 inoremap <C-B> <C-O>h
@@ -83,19 +88,19 @@ inoremap <C-F> <C-O>l
 inoremap <C-N> <C-O>j
 inoremap <C-P> <C-O>k
 
-" Word movement in insert mode
+" Word movement
 inoremap <A-f> <C-O>w
 inoremap <A-b> <C-O>b
 inoremap <A-e> <C-O>e
 
-" Deletion in insert mode
-inoremap <C-H> <BS>
+" Deletion (mirrored, with <C-H> as delete word like Neovim <C-w>)
+inoremap <C-H> <C-W>
 inoremap <C-W> <C-O>db
 inoremap <C-U> <C-O>d0
 inoremap <C-K> <C-O>D
 inoremap <C-D> <Del>
 
-" Navigation helpers for brackets
+" Navigation helpers
 inoremap <C-]> <C-O>f)
 inoremap <C-\> <C-O>f}
 
@@ -104,44 +109,75 @@ inoremap jk <Esc>
 inoremap kj <Esc>
 
 " ==========================================
-" NORMAL MODE - LEADER KEY MAPPINGS
+" NORMAL MODE - LEADER KEY MAPPINGS (mirrored from init.lua)
 " ==========================================
 
-" Telescope equivalents
+" Telescope equivalents (find files, grep, buffers, help, symbols, etc.)
 nnoremap <leader>ff <Action>(GotoFile)
 nnoremap <leader>fg <Action>(FindInPath)
-nnoremap <leader>fb <Action>(RecentFiles)
-nnoremap <leader>fh <Action>(GotoAction)
+nnoremap <leader>fb <Action>(Switcher)  " Buffers equivalent (RecentFiles was there, but Switcher is closer to open buffers)
+nnoremap <leader>fh <Action>(SearchEverywhere)
+nnoremap <leader>fs <Action>(FileStructurePopup)  " Document symbols (like lsp_document_symbols)
+nnoremap <leader>fw <Action>(GotoSymbol)  " Workspace symbols
+nnoremap <leader>fo <Action>(RecentFiles)  " Old/recent files
 
-" Project navigation
+" File explorer (Neo-tree toggle)
 nnoremap <leader>e <Action>(ActivateProjectToolWindow)
 
-" Buffer navigation
+" Buffer navigation (mirrored <S-h/l>)
 nnoremap <S-l> <Action>(NextTab)
 nnoremap <S-h> <Action>(PreviousTab)
 
 " Clear search highlighting
 nnoremap <leader>h :nohlsearch<CR>
 
-" Window navigation
-nnoremap <A-h> <C-w>h
-nnoremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
+" Window navigation (mirrored Neovim <C-hjkl> - set handler to vim for consistency, override if conflicts)
+sethandler <C-h> n:vim
+sethandler <C-j> n:vim
+sethandler <C-k> n:vim
+sethandler <C-l> n:vim
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
-" LSP keymaps
+" Format file (mirrored <leader>f from init.lua)
+nnoremap <leader>f <Action>(ReformatCode)
+
+" LSP keymaps (mirrored exactly)
 nnoremap gd <Action>(GotoDeclaration)
 nnoremap K <Action>(QuickJavaDoc)
 nnoremap gi <Action>(GotoImplementation)
 nnoremap gr <Action>(FindUsages)
 nnoremap <leader>rn <Action>(RenameElement)
 nnoremap <leader>ca <Action>(ShowIntentionActions)
+nnoremap gD <Action>(GotoDeclaration)  " Declaration (close to definition)
+" Diagnostics (mirrored [d ]d <leader>d)
+nnoremap [d <Action>(GotoPreviousError)
+nnoremap ]d <Action>(GotoNextError)
+nnoremap <leader>d <Action>(ShowErrorDescription)
 
-" Kotlin specific
+" Go-specific (kept for personal training, even in Kotlin - insert err handling)
+nnoremap <leader>ge oif (err != null) {<CR>}<Esc>Oreturn null<CR><Esc>
+
+" Kotlin/IntelliJ specific (kept, but can override with Go-style if needed)
 nnoremap <leader>kb <Action>(CompileProject)
 nnoremap <leader>kr <Action>(Run)
 nnoremap <leader>kt <Action>(RunClass)
 nnoremap <leader>kd <Action>(Debug)
+
+" Testing (mirrored Neovim neotest keys - adapted to IntelliJ run/debug tests)
+nnoremap <leader>tn <Action>(RunClass)  " Nearest/file (contextual run)
+nnoremap <leader>tf <Action>(RunClass)  " Run file (same as above for simplicity)
+nnoremap <leader>ts <Action>(ActivateRunToolWindow)  " Toggle summary (Run window)
+nnoremap <leader>td <Action>(DebugClass)  " Debug nearest/file
+
+" Debugging (aligned to Neovim keys: db toggle bp, dc continue, do over, di into, dr repl)
+nnoremap <leader>db <Action>(ToggleLineBreakpoint)
+nnoremap <leader>dc <Action>(Resume)  " Continue/resume
+nnoremap <leader>do <Action>(StepOver)  " Step over (mirrored Neovim do)
+nnoremap <leader>di <Action>(StepInto)  " Step into
+nnoremap <leader>dr <Action>(EvaluateExpression)  " REPL equivalent (evaluate in debug)
 
 " Git integration
 nnoremap <leader>gs <Action>(Vcs.Show.Local.Changes)
@@ -149,14 +185,7 @@ nnoremap <leader>gc <Action>(CheckinProject)
 nnoremap <leader>gp <Action>(Vcs.Push)
 nnoremap <leader>gb <Action>(Git.Branches)
 
-" Debugging
-nnoremap <leader>db <Action>(ToggleLineBreakpoint)
-nnoremap <leader>dr <Action>(Resume)
-nnoremap <leader>ds <Action>(StepOver)
-nnoremap <leader>di <Action>(StepInto)
-nnoremap <leader>do <Action>(StepOut)
-
-" Refactoring
+" Refactoring (kept + mirrored where possible)
 nnoremap <leader>rf <Action>(ReformatCode)
 nnoremap <leader>ro <Action>(OptimizeImports)
 nnoremap <leader>re <Action>(ExtractMethod)
@@ -168,8 +197,11 @@ nnoremap <leader>v <Action>(SplitVertically)
 nnoremap <leader>s <Action>(SplitHorizontally)
 nnoremap <leader>q <Action>(Unsplit)
 
+" Extra: List functions (mirrored Neovim Go <leader>fl - uses structure popup)
+nnoremap <leader>fl <Action>(FileStructurePopup)
+
 " ==========================================
-" VISUAL MODE ENHANCEMENTS
+" VISUAL MODE ENHANCEMENTS (kept)
 " ==========================================
 vnoremap < <gv
 vnoremap > >gv
@@ -181,7 +213,7 @@ vnoremap <A-j> <Action>(MoveLineDown)
 vnoremap <A-k> <Action>(MoveLineUp)
 
 " ==========================================
-" ECLIPSE SHORTCUTS WITH LEADER (OPTIONAL)
+" ECLIPSE SHORTCUTS WITH LEADER (OPTIONAL, kept)
 " ==========================================
 nnoremap <leader>er <Action>(RecentFiles)
 nnoremap <leader>or <Action>(GotoFile)
