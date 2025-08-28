@@ -632,6 +632,9 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.expandtab = false
 		vim.opt_local.tabstop = 4
 		vim.opt_local.shiftwidth = 4
+		vim.keymap.set("n", "]]", "/^func <CR>", { buffer = true })
+		vim.keymap.set("n", "[[", "?^func <CR>", { buffer = true })
+		vim.keymap.set("n", "<leader>fl", ":vimgrep /^func/j % | copen<CR>", { desc = "List functions" })
 	end,
 })
 
