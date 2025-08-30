@@ -89,8 +89,9 @@ require("lazy").setup({
 			require("bufferline").setup({
 				options = {
 					numbers = "none",
-					close_command = "bdelete! %d",
-					right_mouse_command = "bdelete! %d",
+					-- Voltar para comandos mais simples
+					close_command = "Bdelete! %d",
+					right_mouse_command = "Bdelete! %d",
 					left_trunc_marker = "<",
 					right_trunc_marker = ">",
 					max_name_length = 30,
@@ -101,7 +102,7 @@ require("lazy").setup({
 					enforce_regular_tabs = false,
 					always_show_bufferline = true,
 					diagnostics = "nvim_lsp",
-
+					-- Remover offsets que podem estar causando problemas
 					-- filtro para não mostrar buffers "No Name"
 					custom_filter = function(buf_number, buf_numbers)
 						local name = vim.api.nvim_buf_get_name(buf_number)
@@ -112,6 +113,16 @@ require("lazy").setup({
 			})
 		end,
 	},
+	
+	-- Plugin para melhor gerenciamento de buffers
+	{
+		"famiu/bufdelete.nvim",
+		config = function()
+			-- Este plugin fornece comandos melhores para deletar buffers
+			-- sem fechar as janelas
+		end,
+	},
+
 	-- Theme (kept)
 	{
 		"catppuccin/nvim",
@@ -149,7 +160,7 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neo-tree").setup({
-				close_if_last_window = true,
+				close_if_last_window = false, -- MUDANÇA: não abrir automaticamente
 				popup_border_style = "rounded",
 				filesystem = {
 					filtered_items = {
@@ -518,6 +529,23 @@ keymap("n", "<leader>e", "<cmd>Neotree toggle<cr>")
 -- Buffer navigation
 keymap("n", "<S-l>", "<cmd>bnext<cr>")
 keymap("n", "<S-h>", "<cmd>bprevious<cr>")
+
+-- IMPORTANTE: Novos keymaps para gerenciar buffers corretamente
+-- Fechar buffer sem fechar janela
+keymap("n", "<leader>bd", "<cmd>Bdelete<cr>", { desc = "Delete buffer" })
+keymap("n", "<leader>bD", "<cmd>Bdelete!<cr>", { desc = "Force delete buffer" })
+
+-- Mapear :q para fechar buffer ao invés de sair
+vim.cmd([[
+  " Redefinir :q para fechar buffer ao invés de sair
+  cnoreabbrev <expr> q getcmdtype() == ":" && getcmdline() == 'q' ? 'Bdelete' : 'q'
+  cnoreabbrev <expr> wq getcmdtype() == ":" && getcmdline() == 'wq' ? 'w<bar>Bdelete' : 'wq'
+  cnoreabbrev <expr> q! getcmdtype() == ":" && getcmdline() == 'q!' ? 'Bdelete!' : 'q!'
+]])
+
+-- Para realmente sair do Neovim, use :qa ou :quit
+keymap("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+keymap("n", "<leader>qQ", "<cmd>qa!<cr>", { desc = "Force quit all" })
 
 -- Clear search highlighting
 keymap("n", "<leader>h", "<cmd>nohlsearch<cr>")
