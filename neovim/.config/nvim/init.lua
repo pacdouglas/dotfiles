@@ -89,9 +89,9 @@ require("lazy").setup({
 			require("bufferline").setup({
 				options = {
 					numbers = "none",
-					-- Voltar para comandos mais simples
-					close_command = "Bdelete! %d",
-					right_mouse_command = "Bdelete! %d",
+					-- Usar bdelete padrão, não Bdelete
+					close_command = "bdelete! %d",
+					right_mouse_command = "bdelete! %d",
 					left_trunc_marker = "<",
 					right_trunc_marker = ">",
 					max_name_length = 30,
@@ -102,7 +102,6 @@ require("lazy").setup({
 					enforce_regular_tabs = false,
 					always_show_bufferline = true,
 					diagnostics = "nvim_lsp",
-					-- Remover offsets que podem estar causando problemas
 					-- filtro para não mostrar buffers "No Name"
 					custom_filter = function(buf_number, buf_numbers)
 						local name = vim.api.nvim_buf_get_name(buf_number)
@@ -534,16 +533,12 @@ keymap("n", "<S-h>", "<cmd>bprevious<cr>")
 -- Fechar buffer sem fechar janela
 keymap("n", "<leader>bd", "<cmd>Bdelete<cr>", { desc = "Delete buffer" })
 keymap("n", "<leader>bD", "<cmd>Bdelete!<cr>", { desc = "Force delete buffer" })
+keymap("n", "<leader>x", "<cmd>Bdelete<cr>", { desc = "Close buffer" })
 
--- Mapear :q para fechar buffer ao invés de sair
-vim.cmd([[
-  " Redefinir :q para fechar buffer ao invés de sair
-  cnoreabbrev <expr> q getcmdtype() == ":" && getcmdline() == 'q' ? 'Bdelete' : 'q'
-  cnoreabbrev <expr> wq getcmdtype() == ":" && getcmdline() == 'wq' ? 'w<bar>Bdelete' : 'wq'
-  cnoreabbrev <expr> q! getcmdtype() == ":" && getcmdline() == 'q!' ? 'Bdelete!' : 'q!'
-]])
+-- NÃO vamos remapear :q - deixar comportamento padrão
+-- :q vai fechar o Neovim quando for o último buffer (comportamento normal)
 
--- Para realmente sair do Neovim, use :qa ou :quit
+-- Para sair do Neovim
 keymap("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 keymap("n", "<leader>qQ", "<cmd>qa!<cr>", { desc = "Force quit all" })
 
