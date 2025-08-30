@@ -1,5 +1,5 @@
 -- ==========================================
--- NEOVIM CONFIG 2025 - MODERN LUA SETUP (Go-first)
+-- NEOVIM CONFIG 2025 - CLEAN & SIMPLE
 -- ~/.config/nvim/init.lua
 -- ==========================================
 
@@ -23,13 +23,12 @@ opt.smartcase = true
 opt.incsearch = true
 opt.hlsearch = true
 
--- Indentation (default). Go will override to tabs via FileType autocmd below
+-- Indentation
 opt.autoindent = true
 opt.smartindent = true
 opt.tabstop = 4
 opt.shiftwidth = 4
 opt.expandtab = true
-opt.smarttab = true
 
 -- UI
 opt.cursorline = true
@@ -53,14 +52,13 @@ opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 opt.completeopt = { "menuone", "noselect" }
 opt.pumheight = 10
 
--- Clipboard integration
+-- Clipboard
 opt.clipboard = "unnamedplus"
 
 -- ==========================================
--- LAZY.NVIM PLUGIN MANAGER
+-- LAZY.NVIM BOOTSTRAP
 -- ==========================================
 
--- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -82,37 +80,7 @@ vim.opt.rtp:prepend(lazypath)
 -- ==========================================
 
 require("lazy").setup({
-	{
-		"akinsho/bufferline.nvim",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		config = function()
-			require("bufferline").setup({
-				options = {
-					numbers = "none",
-					close_command = "bdelete! %d",
-					right_mouse_command = "bdelete! %d",
-					left_trunc_marker = "<",
-					right_trunc_marker = ">",
-					max_name_length = 30,
-					max_prefix_length = 30,
-					tab_size = 21,
-					show_buffer_close_icons = true,
-					show_close_icon = false,
-					enforce_regular_tabs = false,
-					always_show_bufferline = true,
-					diagnostics = "nvim_lsp",
-
-					-- filtro para não mostrar buffers "No Name"
-					custom_filter = function(buf_number, buf_numbers)
-						local name = vim.api.nvim_buf_get_name(buf_number)
-						-- retorna true apenas se o buffer tiver nome
-						return name ~= ""
-					end,
-				},
-			})
-		end,
-	},
-	-- Theme (kept)
+	-- Theme
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
@@ -122,7 +90,58 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Telescope (kept)
+	-- Bufferline (ABAS!)
+	{
+		"akinsho/bufferline.nvim",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("bufferline").setup({
+				options = {
+					close_command = "bdelete! %d",
+					right_mouse_command = "bdelete! %d",
+					offsets = {
+						{
+							filetype = "NvimTree",
+							text = "File Explorer",
+							text_align = "center",
+							separator = true,
+						},
+					},
+					diagnostics = "nvim_lsp",
+					show_buffer_close_icons = true,
+					show_close_icon = false,
+					always_show_bufferline = true,
+					separator_style = "slant",
+				},
+			})
+		end,
+	},
+
+	-- File explorer - SIMPLIFICADO
+	{
+		"nvim-tree/nvim-tree.lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			-- disable netrw
+			vim.g.loaded_netrw = 1
+			vim.g.loaded_netrwPlugin = 1
+
+			require("nvim-tree").setup({
+				view = {
+					width = 30,
+					side = "left",
+				},
+				renderer = {
+					group_empty = true,
+				},
+				filters = {
+					dotfiles = false,
+				},
+			})
+		end,
+	},
+
+	-- Telescope
 	{
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
@@ -138,45 +157,13 @@ require("lazy").setup({
 		end,
 	},
 
-	-- File explorer (kept)
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		config = function()
-			require("neo-tree").setup({
-				close_if_last_window = true,
-				popup_border_style = "rounded",
-				filesystem = {
-					filtered_items = {
-						visible = true,
-						hide_dotfiles = false,
-						hide_gitignored = false,
-					},
-				},
-			})
-		end,
-	},
-
-	-- Treesitter (trimmed & Go-enabled)
+	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				ensure_installed = {
-					"lua",
-					"vim",
-					"vimdoc",
-					"go",
-					"gomod",
-					"gosum",
-					"gowork",
-				},
+				ensure_installed = { "lua", "vim", "vimdoc", "go", "gomod", "gosum" },
 				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
@@ -184,13 +171,12 @@ require("lazy").setup({
 		end,
 	},
 
-	-- LSP core + Mason
+	-- LSP
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
 		},
 		config = function()
 			require("mason").setup()
@@ -198,22 +184,10 @@ require("lazy").setup({
 				ensure_installed = { "gopls", "lua_ls" },
 			})
 
-			-- Auto-install extra Go tooling (formatters, debug adapter, etc.)
-			require("mason-tool-installer").setup({
-				ensure_installed = {
-					"gopls", -- LSP
-					"gofumpt", -- formatter
-					"goimports", -- imports organizer
-					"delve", -- DAP
-					"stylua", -- lua formatter for this config
-				},
-				run_on_start = true,
-			})
-
 			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- gopls
+			-- Go
 			lspconfig.gopls.setup({
 				capabilities = capabilities,
 				settings = {
@@ -222,28 +196,11 @@ require("lazy").setup({
 						completeUnimported = true,
 						staticcheck = true,
 						gofumpt = true,
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-						codelenses = {
-							gc_details = true,
-							generate = true,
-							test = true,
-							tidy = true,
-							vendor = true,
-							upgrade_dependency = true,
-						},
 					},
 				},
 			})
 
-			-- lua_ls (for editing this config)
+			-- Lua
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 				settings = {
@@ -264,8 +221,6 @@ require("lazy").setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
-			"hrsh7th/cmp-nvim-lsp-signature-help",
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
 		},
@@ -283,28 +238,21 @@ require("lazy").setup({
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-e>"] = cmp.mapping.abort(),
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<Tab>"] = cmp.mapping.select_next_item(),
+					["<S-Tab>"] = cmp.mapping.select_prev_item(),
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					{ name = "nvim_lsp_signature_help" },
 					{ name = "luasnip" },
 				}, {
-					{ name = "path" },
 					{ name = "buffer" },
+					{ name = "path" },
 				}),
 			})
-
-			-- Integrate nvim-autopairs on confirm
-			local ok, cmp_autopairs = pcall(function()
-				return require("nvim-autopairs.completion.cmp")
-			end)
-			if ok then
-				cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-			end
 		end,
 	},
 
-	-- Formatter: Conform (Go uses gofumpt + goimports)
+	-- Formatter
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -312,75 +260,14 @@ require("lazy").setup({
 				go = { "gofumpt", "goimports" },
 				lua = { "stylua" },
 			},
-			format_on_save = function(bufnr)
-				local disable_ft = {}
-				if disable_ft[vim.bo[bufnr].filetype] then
-					return
-				end
-				return { lsp_fallback = true, timeout_ms = 1500 }
-			end,
+			format_on_save = {
+				lsp_fallback = true,
+				timeout_ms = 1500,
+			},
 		},
 	},
 
-	-- Testing: neotest + neotest-go
-	{
-		"nvim-neotest/neotest",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-neotest/nvim-nio",
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-neotest/neotest-go",
-		},
-		config = function()
-			require("neotest").setup({
-				adapters = {
-					require("neotest-go")({
-						experimental = { test_table = true },
-						args = { "-count=1", "-timeout=60s" },
-					}),
-				},
-			})
-		end,
-	},
-
-	-- Debugging: DAP core + Go adapter and UI
-	{
-		"mfussenegger/nvim-dap",
-	},
-	{
-		"jay-babu/mason-nvim-dap.nvim",
-		dependencies = { "williamboman/mason.nvim" },
-		opts = {
-			ensure_installed = { "delve" },
-			automatic_installation = true,
-		},
-	},
-	{
-		"leoluz/nvim-dap-go",
-		dependencies = { "mfussenegger/nvim-dap" },
-		config = function()
-			require("dap-go").setup()
-		end,
-	},
-	{
-		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-		config = function()
-			local dap, dapui = require("dap"), require("dapui")
-			dapui.setup()
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
-			end
-		end,
-	},
-
-	-- Statusline (kept)
+	-- Statusline
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -391,26 +278,11 @@ require("lazy").setup({
 					component_separators = { left = "", right = "" },
 					section_separators = { left = "", right = "" },
 				},
-				sections = {
-					lualine_a = { "mode" },
-					lualine_b = { "branch" },
-					lualine_c = {
-						{
-							function()
-								return vim.fn.reg_recording() ~= "" and ("REC @" .. vim.fn.reg_recording()) or ""
-							end,
-							color = { fg = "#f38ba8", gui = "bold" }, -- rosa Catppuccin
-						},
-					},
-					lualine_x = { "encoding", "fileformat", "filetype" },
-					lualine_y = { "progress" },
-					lualine_z = { "location" },
-				},
 			})
 		end,
 	},
 
-	-- Git (kept)
+	-- Git signs
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -418,24 +290,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Which-key (kept)
-	{
-		"folke/which-key.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("which-key").setup()
-		end,
-	},
-
-	-- Autopairs (kept)
-	{
-		"windwp/nvim-autopairs",
-		config = function()
-			require("nvim-autopairs").setup()
-		end,
-	},
-
-	-- Comments (kept)
+	-- Comments
 	{
 		"numToStr/Comment.nvim",
 		config = function()
@@ -443,10 +298,18 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Surround (kept & lightweight)
+	-- Autopairs
+	{
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup()
+		end,
+	},
+
+	-- Surround
 	"tpope/vim-surround",
 
-	-- Indent guides (kept)
+	-- Indent guides
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
@@ -455,7 +318,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Noice - Better UI for messages, cmdline, popups
+	-- Noice - UI bonita para comandos e mensagens
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
@@ -481,7 +344,7 @@ require("lazy").setup({
 				},
 				cmdline = {
 					enabled = true,
-					view = "cmdline_popup",
+					view = "cmdline_popup", -- O balãozinho!
 				},
 			})
 		end,
@@ -494,75 +357,41 @@ require("lazy").setup({
 
 local keymap = vim.keymap.set
 
--- CTRL + Backspace to delete the previous word
-keymap("i", "<C-H>", "<C-w>", { desc = "Delete previous word (alternative)" })
-
 -- Better window navigation
-keymap("n", "<C-h>", "<C-w>h")
-keymap("n", "<C-j>", "<C-w>j")
-keymap("n", "<C-k>", "<C-w>k")
-keymap("n", "<C-l>", "<C-w>l")
+keymap("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
+keymap("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
+keymap("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
+keymap("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+
+-- File explorer
+keymap("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer" })
 
 -- Telescope
 keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
 keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
 keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
 keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
-keymap("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Find symbols" })
-keymap("n", "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<cr>", { desc = "Workspace symbols" })
-keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
 
--- Neo-tree
-keymap("n", "<leader>e", "<cmd>Neotree toggle<cr>")
+-- Buffer navigation (com abas!)
+keymap("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+keymap("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer" })
+keymap("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
+keymap("n", "<leader>bp", "<cmd>BufferLinePickClose<cr>", { desc = "Pick buffer to close" })
+keymap("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", { desc = "Close other buffers" })
 
--- Buffer navigation
-keymap("n", "<S-l>", "<cmd>bnext<cr>")
-keymap("n", "<S-h>", "<cmd>bprevious<cr>")
+-- Clear search
+keymap("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 
--- Clear search highlighting
-keymap("n", "<leader>h", "<cmd>nohlsearch<cr>")
-
--- Format file manually
+-- Format
 keymap("n", "<leader>f", function()
 	require("conform").format()
 end, { desc = "Format file" })
 
--- Go specific shortcuts
+-- Go specific
 keymap("n", "<leader>ge", "oif err != nil {<CR>}<Esc>Oreturn err<Esc>", { desc = "Go: if err != nil" })
 
--- Go / Tests (neotest)
-keymap("n", "<leader>tn", function()
-	require("neotest").run.run()
-end, { desc = "Test nearest" })
-keymap("n", "<leader>tf", function()
-	require("neotest").run.run(vim.fn.expand("%"))
-end, { desc = "Test file" })
-keymap("n", "<leader>ts", function()
-	require("neotest").summary.toggle()
-end, { desc = "Toggle test summary" })
-keymap("n", "<leader>td", function()
-	require("neotest").run.run({ strategy = "dap" })
-end, { desc = "Debug nearest test" })
-
--- Debugging (DAP)
-keymap("n", "<leader>db", function()
-	require("dap").toggle_breakpoint()
-end, { desc = "DAP: Toggle Breakpoint" })
-keymap("n", "<leader>dc", function()
-	require("dap").continue()
-end, { desc = "DAP: Continue" })
-keymap("n", "<leader>do", function()
-	require("dap").step_over()
-end, { desc = "DAP: Step Over" })
-keymap("n", "<leader>di", function()
-	require("dap").step_into()
-end, { desc = "DAP: Step Into" })
-keymap("n", "<leader>dr", function()
-	require("dap").repl.toggle()
-end, { desc = "DAP: Toggle REPL" })
-
 -- ==========================================
--- AUTO COMMANDS
+-- AUTOCOMMANDS
 -- ==========================================
 
 -- Highlight on yank
@@ -579,7 +408,17 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
--- LSP keymaps + inlay hints
+-- Go specific settings
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "go",
+	callback = function()
+		vim.opt_local.expandtab = false
+		vim.opt_local.tabstop = 4
+		vim.opt_local.shiftwidth = 4
+	end,
+})
+
+-- LSP keymaps
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local opts = { buffer = ev.buf }
@@ -589,75 +428,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keymap("n", "gr", vim.lsp.buf.references, opts)
 		keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)
 		keymap("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-
-		-- Diagnostics navigation
 		keymap("n", "<leader>d", vim.diagnostic.open_float, opts)
 		keymap("n", "[d", vim.diagnostic.goto_prev, opts)
 		keymap("n", "]d", vim.diagnostic.goto_next, opts)
-
-		-- Extra useful LSP mappings
-		keymap("n", "gD", vim.lsp.buf.declaration, opts)
-		keymap("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-		keymap("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-		keymap("n", "<leader>wl", function()
-			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-		end, opts)
-
-		-- Robust inlay hints enable (handles API diffs across Neovim versions)
-		if vim.lsp.inlay_hint then
-			local ok1, ih = pcall(function()
-				return vim.lsp.inlay_hint
-			end)
-			if ok1 then
-				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				if client and client.server_capabilities.inlayHintProvider then
-					local success = pcall(function()
-						-- Neovim 0.10+
-						ih.enable(true, { bufnr = ev.buf })
-					end)
-					if not success then
-						-- Older API shape
-						pcall(ih, ev.buf, true)
-					end
-				end
-			end
-		end
-	end,
-})
-
--- Go filetype: use tabs (gofmt style)
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "go",
-	callback = function()
-		vim.opt_local.expandtab = false
-		vim.opt_local.tabstop = 4
-		vim.opt_local.shiftwidth = 4
-		vim.keymap.set("n", "]]", "/^func <CR>", { buffer = true })
-		vim.keymap.set("n", "[[", "?^func <CR>", { buffer = true })
-		vim.keymap.set("n", "<leader>fl", ":vimgrep /^func/j % | copen<CR>", { desc = "List functions" })
 	end,
 })
 
 -- ==========================================
--- DIAGNOSTIC CONFIGURATION
+-- DIAGNOSTIC CONFIG
 -- ==========================================
 
 vim.diagnostic.config({
-	virtual_text = {
-		prefix = "●",
-		source = "if_many",
-	},
-	float = {
-		source = "always",
-		border = "rounded",
-	},
+	virtual_text = true,
 	signs = true,
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
 })
 
--- Diagnostic signs
+-- Signs
 local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
