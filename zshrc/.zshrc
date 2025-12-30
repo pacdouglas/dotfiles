@@ -142,11 +142,16 @@ alias now='date +"%T"'
 alias nowdate='date +"%d-%m-%Y"'
 
 # System info
-alias df='df -h'
-alias du='du -h'
 alias free='free -h'
 alias ps='ps auxf'
 alias psg='ps aux | grep -v grep | grep -i -E'
+alias cat='bat --style=plain'
+alias ls='eza -la --icons'
+alias grep='rg'
+alias find='fd'
+alias top='btop'
+alias du='dust'
+alias df='duf'
 
 # ==========================================
 # PLUGINS AND ENHANCEMENTS
@@ -220,3 +225,14 @@ export GTK_USE_PORTAL=0
 fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 # initialise completions with ZSH's compinit
 autoload -Uz compinit && compinit
+
+eval $(keychain --eval --quiet ~/.ssh/github ~/.ssh/gitlab_kaffa)
+
+# Auto-start tmux
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+    if tmux has-session 2>/dev/null; then
+        exec tmux attach
+    else
+        exec tmux new-session
+    fi
+fi
