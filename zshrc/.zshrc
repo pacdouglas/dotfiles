@@ -153,6 +153,8 @@ alias top='btop'
 alias du='dust'
 alias df='duf'
 
+alias xclip='xclip -selection c'
+
 # ==========================================
 # PLUGINS AND ENHANCEMENTS
 # ==========================================
@@ -235,4 +237,8 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
     else
         exec tmux new-session
     fi
+fi
+
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+    eval $(dbus-launch --sh-syntax)
 fi
