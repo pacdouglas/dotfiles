@@ -90,10 +90,6 @@ bindkey '^[[P' delete-char           # Delete key (alternative)
 # ADVANCED AUTOCOMPLETION
 # ==========================================
 
-# Load completion system
-autoload -Uz compinit
-compinit
-
 # Completion settings
 zstyle ':completion:*' menu select                          # interactive menu
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'        # case insensitive
@@ -227,6 +223,8 @@ export GTK_USE_PORTAL=0
 fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 # initialise completions with ZSH's compinit
 autoload -Uz compinit && compinit
+
+compdef _ls eza
 
 eval $(keychain --eval --quiet ~/.ssh/github ~/.ssh/gitlab_kaffa)
 
