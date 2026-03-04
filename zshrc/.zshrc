@@ -240,3 +240,4 @@ fi
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     eval $(dbus-launch --sh-syntax)
 fi
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
