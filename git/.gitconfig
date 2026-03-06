@@ -4,30 +4,33 @@
 	ci = commit
 	st = status
 	br = branch
-	st = status
-    	di = diff
-    	dt = difftool
+	di = diff
+	dt = difftool
 	cp = cherry-pick
 	type = cat-file -t
 	dump = cat-file -p
 	pushit = push -u origin HEAD
 	pushf = push -f
-    	glog = !"git --no-pager log --all --color=always --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' | less -r -X +/[^/]HEAD"
+	glog = !"git --no-pager log --all --color=always --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' | less -r -X +/[^/]HEAD"
 	aap = !git add . && git commit --amend --no-edit && git push -f
+
 [includeIf "gitdir:~/"]
     path = ~/.gitconfig-personal
 [includeIf "gitdir:~/git/**"]
     path = ~/.gitconfig-work
+
 [push]
 	default = simple
-[gui]
-	fontui = -family \"DejaVu Sans\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
-	fontdiff = -family Hack -size 10 -weight normal -slant roman -underline 0 -overstrike 0
-	tabsize = 4
-	gcwarning = false
-	fastcopyblame = true
+
+[pull]
+	ff = only
+
+[core]
+	editor = nvim
+
 [remote "origin"]
-        prune = true
+	prune = true
+
 [diff]
   tool = ij
 [difftool]
@@ -36,6 +39,7 @@
   cmd = "$IDEA_HOME/bin/idea-pause.sh" diff $LOCAL $REMOTE
   keepbackup = false
   trustexitcode = false
+
 [merge]
   tool = ij
 [mergetool]
@@ -44,9 +48,10 @@
   cmd = "$IDEA_HOME/bin/idea-pause.sh" merge $LOCAL $REMOTE $BASE $MERGED
   keepbackup = false
   trustexitcode = false
-[push] 
-	default = simple
-[pull]
-	ff = only
-[core]
-	editor = 'vim'
+
+[gui]
+	fontui = -family \"DejaVu Sans\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Hack -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+	tabsize = 4
+	gcwarning = false
+	fastcopyblame = true

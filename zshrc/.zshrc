@@ -1,181 +1,111 @@
-eval "$(starship init zsh)"
-
-setopt SHARE_HISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_REDUCE_BLANKS
-setopt HIST_IGNORE_SPACE
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-setopt HIST_VERIFY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_SAVE_NO_DUPS
-setopt HIST_FIND_NO_DUPS
-
-# History configuration
+# ==========================================
+# HISTORY
+# ==========================================
 export HISTSIZE=100000
 export SAVEHIST=100000
 export HISTFILE=~/.zsh_history
 
-# Opções úteis do ZSH
 setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_VERIFY
-setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
 
-# General settings
-setopt AUTO_CD             # automatic cd
-setopt CORRECT             # command correction
-setopt GLOB_DOTS           # include hidden files in glob
-setopt NO_BEEP             # no beep sound
-setopt PROMPT_SUBST        # prompt substitution
+# ==========================================
+# GENERAL
+# ==========================================
+setopt AUTO_CD
+setopt CORRECT
+setopt GLOB_DOTS
+setopt NO_BEEP
+setopt PROMPT_SUBST
 
 # ==========================================
 # NAVIGATION AND KEYBOARD SHORTCUTS
 # ==========================================
-
-# Enable emacs mode for line editing
 bindkey -e
 
-# CTRL + Backspace: delete previous word
-bindkey '^H' backward-kill-word
-
-# CTRL + Delete: delete next word
-bindkey '^[[3;5~' kill-word
-
-# CTRL + Left Arrow: move word backward
-bindkey '^[[1;5D' backward-word
-
-# CTRL + Right Arrow: move word forward
-bindkey '^[[1;5C' forward-word
-
-# CTRL + H: move word backward (alternative)
-bindkey '^[h' backward-word
-
-# CTRL + L: move word forward (alternative)
-bindkey '^[l' forward-word
-
-# Alt + Backspace: delete word (backup)
-bindkey '^[^?' backward-kill-word
-
-# Other useful shortcuts
-bindkey '^A' beginning-of-line      # CTRL + A: beginning of line
-bindkey '^E' end-of-line           # CTRL + E: end of line
-bindkey '^K' kill-line             # CTRL + K: delete to end
-bindkey '^U' kill-whole-line       # CTRL + U: delete entire line
-bindkey '^R' history-incremental-search-backward  # CTRL + R: history search
-
-# Home and End keys
-bindkey '^[[H' beginning-of-line     # Home key
-bindkey '^[[F' end-of-line           # End key
-bindkey '^[[1~' beginning-of-line    # Home key (alternative)
-bindkey '^[[4~' end-of-line          # End key (alternative)
-
-# xterm sequences
-bindkey '^[[7~' beginning-of-line    # Home key (xterm)
-bindkey '^[[8~' end-of-line          # End key (xterm)
-
-# Additional common sequences
-bindkey '^[OH' beginning-of-line     # Home key (tmux/screen)
-bindkey '^[OF' end-of-line           # End key (tmux/screen)
-
-# Delete key configurations
-bindkey '^[[3~' delete-char          # Delete key (main)
-bindkey '^[[P' delete-char           # Delete key (alternative)
+bindkey '^H'       backward-kill-word   # CTRL+Backspace: delete previous word
+bindkey '^[[3;5~'  kill-word            # CTRL+Delete: delete next word
+bindkey '^[[1;5D'  backward-word        # CTRL+Left: move word backward
+bindkey '^[[1;5C'  forward-word         # CTRL+Right: move word forward
+bindkey '^[h'      backward-word
+bindkey '^[l'      forward-word
+bindkey '^[^?'     backward-kill-word   # Alt+Backspace
+bindkey '^A'       beginning-of-line
+bindkey '^E'       end-of-line
+bindkey '^K'       kill-line
+bindkey '^U'       kill-whole-line
+bindkey '^R'       history-incremental-search-backward
+bindkey '^[[H'     beginning-of-line
+bindkey '^[[F'     end-of-line
+bindkey '^[[1~'    beginning-of-line
+bindkey '^[[4~'    end-of-line
+bindkey '^[[7~'    beginning-of-line
+bindkey '^[[8~'    end-of-line
+bindkey '^[OH'     beginning-of-line
+bindkey '^[OF'     end-of-line
+bindkey '^[[3~'    delete-char
+bindkey '^[[P'     delete-char
 
 # ==========================================
-# ADVANCED AUTOCOMPLETION
+# AUTOCOMPLETION
 # ==========================================
+autoload -U colors && colors
+autoload -Uz compinit && compinit
 
-# Completion settings
-zstyle ':completion:*' menu select                          # interactive menu
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'        # case insensitive
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"    # colors for files
-zstyle ':completion:*' rehash true                          # search for new executables
-zstyle ':completion:*' accept-exact '*(N)'                 # accept exact matches
-zstyle ':completion:*' use-cache on                        # use cache
-zstyle ':completion:*' cache-path ~/.zsh/cache            # cache location
-
-# Complete processes for kill command
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
-# ==========================================
-# CUSTOM PROMPT
-# ==========================================
-
-# Colors
-autoload -U colors && colors
+compdef _ls eza
 
 # ==========================================
-# USEFUL ALIASES
+# ALIASES
 # ==========================================
 
-# File listing
-alias ls='ls --color=auto'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias lh='ls -lah'
-
-# Colored commands
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias diff='diff --color=auto'
-
-# Safe commands
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-# Useful commands
-alias which='type -a'
-alias path='echo -e ${PATH//:/\\n}'
-alias now='date +"%T"'
-alias nowdate='date +"%d-%m-%Y"'
-
-# System info
-alias free='free -h'
-alias ps='ps auxf'
-alias psg='ps aux | grep -v grep | grep -i -E'
-alias cat='bat --style=plain'
+# Modern replacements
 alias ls='eza -la --icons'
+alias cat='bat --style=plain'
 alias grep='rg'
 alias find='fd'
 alias top='btop'
 alias du='dust'
 alias df='duf'
 
+# Colored fallbacks
+alias diff='diff --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Safe commands
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Useful
+alias which='type -a'
+alias path='echo -e ${PATH//:/\\n}'
+alias now='date +"%T"'
+alias nowdate='date +"%d-%m-%Y"'
+alias free='free -h'
+alias ps='ps auxf'
+alias psg='ps aux | grep -v grep | grep -i -E'
 alias xclip='xclip -selection c'
 
 # ==========================================
-# PLUGINS AND ENHANCEMENTS
+# FUNCTIONS
 # ==========================================
 
-# Syntax highlighting
-if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-# Autosuggestions
-if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
-fi
-
-# FZF
-if command -v fzf &> /dev/null; then
-    source <(fzf --zsh)
-fi
-
-# ==========================================
-# USEFUL FUNCTIONS
-# ==========================================
-
-# Extract various archive formats
 extract() {
     if [ -f $1 ]; then
         case $1 in
@@ -197,36 +127,52 @@ extract() {
     fi
 }
 
-# Create directory and enter it
 mkcd() {
     mkdir -p "$1" && cd "$1"
 }
 
-# Search in history
 hgrep() {
     history | grep "$1"
 }
 
-# Directory sizes sorted
 dsize() {
     du -sh * | sort -h
 }
 
+# ==========================================
+# ENVIRONMENT
+# ==========================================
 export PATH="$HOME/.local/bin:$PATH"
 export ASDF_DATA_DIR="/opt/tools/asdf"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
 export FILEMANAGER=thunar
 export GTK_USE_PORTAL=0
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
 
-# append completions to fpath
 fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
-# initialise completions with ZSH's compinit
-autoload -Uz compinit && compinit
 
-compdef _ls eza
+# ==========================================
+# PLUGINS
+# ==========================================
+if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
+fi
+
+if command -v fzf &> /dev/null; then
+    source <(fzf --zsh)
+fi
 
 eval $(keychain --eval --quiet ~/.ssh/github ~/.ssh/gitlab_kaffa)
+
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+    eval $(dbus-launch --sh-syntax)
+fi
 
 # Auto-start tmux
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
@@ -237,7 +183,5 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
     fi
 fi
 
-if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
-    eval $(dbus-launch --sh-syntax)
-fi
-export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+# Starship prompt (sempre por ultimo)
+eval "$(starship init zsh)"
