@@ -182,6 +182,34 @@ return {
     },
 
     -- ============================================================
+    -- Screenkey: mostra historico de teclas pressionadas (util para aprender)
+    -- ============================================================
+    {
+        "NStefan002/screenkey.nvim",
+        event = "VeryLazy",
+        keys = {
+            { "<leader>uk", "<cmd>Screenkey<cr>", desc = "Toggle Screenkey" },
+        },
+        config = function()
+            require("screenkey").setup({
+                win_opts = {
+                    row    = vim.o.lines - vim.o.cmdheight - 1,
+                    col    = vim.o.columns - 1,
+                    anchor = "SE",
+                    width  = 40,
+                    height = 3,
+                },
+                compress_after = 3,
+                clear_after    = 3,
+                show_leader    = true,
+                group_mappings = true,
+            })
+            -- Abre automaticamente ao iniciar
+            vim.cmd("Screenkey")
+        end,
+    },
+
+    -- ============================================================
     -- Noice: UI moderna para cmdline, mensagens LSP, notify
     -- ============================================================
     {
