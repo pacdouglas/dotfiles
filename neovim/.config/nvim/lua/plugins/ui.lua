@@ -57,6 +57,10 @@ return {
                     show_close_icon    = false,
                     color_icons        = true,
                     diagnostics        = "nvim_lsp",
+                custom_filter = function(buf_number)
+                    if vim.fn.bufname(buf_number) == "" then return false end
+                    return true
+                end,
                     diagnostics_indicator = function(_, _, diag)
                         local icons = { error = " ", warning = " " }
                         local ret = (diag.error and icons.error .. diag.error .. " " or "")
