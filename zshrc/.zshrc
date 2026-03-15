@@ -93,6 +93,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 # Useful
+alias history='fc -l 1'
 alias which='type -a'
 alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
