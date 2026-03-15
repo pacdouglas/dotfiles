@@ -1,0 +1,128 @@
+/* Rofi config - migrado do Wofi */
+/* Catppuccin Mocha theme */
+
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    font: "MesloLGS Nerd Font Mono Bold 14";
+    display-drun: "Apps";
+    display-run: "Run";
+    display-window: "Windows";
+    drun-display-format: "{name}";
+}
+
+@theme "/dev/null"
+
+* {
+    rosewater: #f5e0dc;
+    flamingo:  #f2cdcd;
+    pink:      #f5c2e7;
+    mauve:     #cba6f7;
+    red:       #f38ba8;
+    maroon:    #eba0ac;
+    peach:     #fab387;
+    yellow:    #f9e2af;
+    green:     #a6e3a1;
+    teal:      #94e2d5;
+    sky:       #89dceb;
+    sapphire:  #74c7ec;
+    blue:      #89b4fa;
+    lavender:  #b4befe;
+    text:      #cdd6f4;
+    subtext1:  #bac2de;
+    subtext0:  #a6adc8;
+    overlay2:  #9399b2;
+    overlay1:  #7f849c;
+    overlay0:  #6c7086;
+    surface2:  #585b70;
+    surface1:  #45475a;
+    surface0:  #313244;
+    base:      #1e1e2e;
+    mantle:    #181825;
+    crust:     #11111b;
+
+    bg:        @base;
+    fg:        @text;
+    accent:    @lavender;
+    urgent:    @red;
+
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    width:            420px;
+    padding:          10px;
+    border:           2px solid;
+    border-color:     @accent;
+    border-radius:    8px;
+    background-color: @bg;
+}
+
+mainbox {
+    spacing: 10px;
+}
+
+inputbar {
+    padding:          10px;
+    border-radius:    4px;
+    background-color: @bg;
+    children:         [ prompt, textbox-prompt-colon, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: " ";
+    text-color: @accent;
+}
+
+entry {
+    placeholder:       "Search...";
+    placeholder-color: @overlay0;
+    text-color:        @fg;
+}
+
+listbox {
+    spacing: 5px;
+}
+
+listview {
+    lines:    8;
+    columns:  1;
+    fixed-height: false;
+    scrollbar: false;
+}
+
+element {
+    padding:       8px;
+    border-radius: 4px;
+}
+
+element normal.normal {
+    background-color: @bg;
+    text-color:       @fg;
+}
+
+element selected.normal {
+    border:           1px solid;
+    border-color:     @accent;
+    background-color: @bg;
+    text-color:       @mauve;
+}
+
+element alternate.normal {
+    background-color: @bg;
+    text-color:       @fg;
+}
+
+element-icon {
+    size: 24px;
+}
+
+element-text {
+    vertical-align: 0.5;
+}
