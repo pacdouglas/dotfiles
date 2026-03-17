@@ -55,6 +55,14 @@ bindkey '^[[P'     delete-char
 # ==========================================
 # AUTOCOMPLETION
 # ==========================================
+export ASDF_DATA_DIR="/opt/tools/asdf"
+
+# asdf completions (v0.18+): gera arquivo _asdf no fpath
+if command -v asdf &>/dev/null && [[ ! -f ~/.zsh/completions/_asdf ]]; then
+    mkdir -p ~/.zsh/completions && asdf completion zsh > ~/.zsh/completions/_asdf
+fi
+fpath=(~/.zsh/completions $fpath)
+
 autoload -U colors && colors
 autoload -Uz compinit && compinit
 
@@ -147,14 +155,11 @@ dsize() {
 # ENVIRONMENT
 # ==========================================
 export PATH="$HOME/.local/bin:$PATH"
-export ASDF_DATA_DIR="/opt/tools/asdf"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
 export FILEMANAGER=thunar
 export GTK_USE_PORTAL=0
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
-
-fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 
 # ==========================================
 # PLUGINS
