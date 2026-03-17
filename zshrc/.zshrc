@@ -136,6 +136,9 @@ hgrep() {
     fc -l 1 | grep "$1"
 }
 
+# Local aliases (not tracked by git)
+[[ -f ~/.zsh_aliases_local ]] && source ~/.zsh_aliases_local
+
 dsize() {
     du -sh * | sort -h
 }
