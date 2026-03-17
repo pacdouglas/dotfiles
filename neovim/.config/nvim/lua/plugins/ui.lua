@@ -199,10 +199,10 @@ return {
                     width  = 40,
                     height = 3,
                 },
-                compress_after = 3,
+                compress_after = 2,
                 clear_after    = 3,
                 show_leader    = true,
-                group_mappings = true,
+                group_mappings = false,
             })
             -- Abre automaticamente ao iniciar
             vim.cmd("Screenkey")
