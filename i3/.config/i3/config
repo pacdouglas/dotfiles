@@ -48,9 +48,9 @@ font pango:MesloLGS Nerd Font Mono Bold 10
 gaps inner 4
 gaps outer 10
 
-# Borda (equivalente a border_size=2 do Hyprland)
-default_border pixel 4
-default_floating_border pixel 4
+# Sem borda — foco diferenciado via picom (shadow/opacity)
+default_border pixel 0
+default_floating_border pixel 0
 
 # Cores das janelas
 # class                 border    backgr.   text      indicator  child_border
@@ -215,7 +215,7 @@ for_window [class="^jetbrains-.*" window_type="dialog"] focus
 for_window [class="^IntelliJ IDEA$"] focus
 
 # Forcar borda do i3 em todas as janelas (desativa CSD do GTK)
-for_window [class=".*"] border pixel 4
+for_window [class=".*"] border pixel 0
 
 # Floating por padrao para dialogs
 for_window [window_role="pop-up"] floating enable
