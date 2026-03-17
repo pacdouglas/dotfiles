@@ -45,8 +45,8 @@ set $crust     #11111b
 font pango:MesloLGS Nerd Font Mono Bold 10
 
 # Gaps (equivalente a gaps_in=2 gaps_out=10 do Hyprland)
-gaps inner 4
-gaps outer 10
+gaps inner 2
+gaps outer 4
 
 # Sem borda — foco diferenciado via picom (shadow/opacity)
 default_border pixel 0
