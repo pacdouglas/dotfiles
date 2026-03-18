@@ -204,8 +204,7 @@ return {
                 show_leader    = true,
                 group_mappings = false,
             })
-            -- Abre automaticamente ao iniciar
-            vim.cmd("Screenkey")
+            -- Use <leader>uk para abrir manualmente
         end,
     },
 

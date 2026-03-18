@@ -61,7 +61,7 @@ lua/plugins/
 - **Plugin manager**: lazy.nvim (lazy loading por evento/filetype)
 - **LSP API**: `vim.lsp.config` + `vim.lsp.enable` (nativa Neovim 0.11+, sem lspconfig.setup())
 - **Completion**: blink.cmp (nao nvim-cmp) — mais rapido, binario Rust pre-compilado
-- **Tema**: catppuccin-mocha com `transparent_background = true`
+- **Tema**: tokyonight-night com `transparent_background = true` (catppuccin, rose-pine, kanagawa, gruvbox-material disponíveis)
 - **Telescope**: `preview.treesitter = false` — fix de incompatibilidade com Neovim 0.11
 - **Treesitter**: usa `require("nvim-treesitter").setup()` (API v1, nao `nvim-treesitter.configs`)
 - **Formatacao**: conform.nvim formata ao salvar (gofumpt + goimports para Go)

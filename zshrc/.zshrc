@@ -64,7 +64,12 @@ fi
 fpath=(~/.zsh/completions $fpath)
 
 autoload -U colors && colors
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -116,19 +121,19 @@ alias xclip='xclip -selection c'
 # ==========================================
 
 extract() {
-    if [ -f $1 ]; then
-        case $1 in
-            *.tar.bz2)   tar xjvf $1    ;;
-            *.tar.gz)    tar xzvf $1    ;;
-            *.bz2)       bunzip2 -v $1  ;;
-            *.rar)       unrar x $1     ;;
-            *.gz)        gunzip -v $1   ;;
-            *.tar)       tar xvf $1     ;;
-            *.tbz2)      tar xjvf $1    ;;
-            *.tgz)       tar xzvf $1    ;;
-            *.zip)       unzip $1       ;;
-            *.Z)         uncompress -v $1 ;;
-            *.7z)        7z x $1        ;;
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2)   tar xjvf "$1"    ;;
+            *.tar.gz)    tar xzvf "$1"    ;;
+            *.bz2)       bunzip2 -v "$1"  ;;
+            *.rar)       unrar x "$1"     ;;
+            *.gz)        gunzip -v "$1"   ;;
+            *.tar)       tar xvf "$1"     ;;
+            *.tbz2)      tar xjvf "$1"    ;;
+            *.tgz)       tar xzvf "$1"    ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress -v "$1" ;;
+            *.7z)        7z x "$1"        ;;
             *)           echo "'$1' cannot be extracted via extract()" ;;
         esac
     else
@@ -148,7 +153,7 @@ hgrep() {
 [[ -f ~/.zsh_aliases_local ]] && source ~/.zsh_aliases_local
 
 dsize() {
-    du -sh * | sort -h
+    command du -sh * | sort -h
 }
 
 # ==========================================
