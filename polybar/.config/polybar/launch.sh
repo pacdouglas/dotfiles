@@ -14,3 +14,10 @@ if type "xrandr"; then
 else
     polybar --reload main &
 fi
+
+# Reinicia apps de tray para re-registrar icones no novo polybar
+sleep 1
+if pgrep -x copyq >/dev/null; then
+    killall -q copyq
+    copyq &
+fi
