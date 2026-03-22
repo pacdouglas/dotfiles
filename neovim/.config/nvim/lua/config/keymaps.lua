@@ -74,7 +74,9 @@ map("v", "<A-k>", ":m '<-2<cr>gv=gv",  { desc = "Mover selecao acima" })
 map("v", "p", '"_dP', { desc = "Colar sem sobrescrever registro" })
 
 -- Ctrl+Backspace deleta palavra anterior (como no IntelliJ/qualquer editor)
+-- Terminais enviam codigos diferentes para Ctrl+BS: <C-BS>, <C-H> ou ^[[127;5u
 map("i", "<C-BS>", "<C-w>", { desc = "Deletar palavra anterior" })
+map("i", "<C-h>", "<C-w>", { desc = "Deletar palavra anterior" })
 
 -- Linha nova sem entrar em insert mode
 map("n", "<leader>nl", "o<Esc>", { desc = "Nova linha abaixo" })
