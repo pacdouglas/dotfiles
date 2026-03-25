@@ -99,6 +99,9 @@ bindsym $mod+Mod1+l exec i3lock-fancy-rapid 5 3
 # Screenshot (flameshot)
 bindsym Print exec --no-startup-id flameshot gui
 
+# Wallpaper - proximo aleatorio
+bindsym $mod+Shift+w exec --no-startup-id feh --bg-fill "$(find ~/wallpapers -type f \( -name '*.jpg' -o -name '*.png' \) | shuf -n 1)"
+
 # ============================================================
 # KEYBINDINGS - foco (hjkl + setas, igual Hyprland)
 # ============================================================
