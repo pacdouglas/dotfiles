@@ -8,6 +8,7 @@ return {
             require("conform").setup({
                 formatters_by_ft = {
                     go       = { "gofumpt", "goimports" },
+                    kotlin   = { "ktlint" },
                     lua      = { "stylua" },
                     json     = { "jq" },
                     yaml     = { "prettier" },

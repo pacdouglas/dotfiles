@@ -24,7 +24,7 @@ return {
             })
 
             require("mason-lspconfig").setup({
-                ensure_installed = { "gopls", "lua_ls" },
+                ensure_installed = { "gopls", "lua_ls", "kotlin_language_server" },
                 automatic_installation = true,
             })
 
@@ -99,6 +99,27 @@ return {
                 },
             }
             vim.lsp.enable("lua_ls")
+
+            -- --------------------------------------------------------
+            -- kotlin_language_server: Language Server para Kotlin
+            -- --------------------------------------------------------
+            vim.lsp.config.kotlin_language_server = {
+                cmd       = { "kotlin-language-server" },
+                filetypes = { "kotlin" },
+                root_markers = { "settings.gradle", "settings.gradle.kts", "build.gradle", "build.gradle.kts", "pom.xml", ".git" },
+                capabilities = capabilities,
+                settings = {
+                    kotlin = {
+                        compiler = { jvm = { target = "17" } },
+                        hints = {
+                            typeHints    = true,
+                            parameterHints = true,
+                            chainingHints  = true,
+                        },
+                    },
+                },
+            }
+            vim.lsp.enable("kotlin_language_server")
 
             -- --------------------------------------------------------
             -- Diagnosticos: visual e comportamento

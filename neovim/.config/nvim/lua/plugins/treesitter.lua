@@ -15,6 +15,8 @@ return {
                 ensure_installed = {
                     -- Go
                     "go", "gomod", "gosum", "gowork",
+                    -- Kotlin
+                    "kotlin",
                     -- Lua (config do nvim)
                     "lua", "vim", "vimdoc", "query",
                     -- Formatos comuns

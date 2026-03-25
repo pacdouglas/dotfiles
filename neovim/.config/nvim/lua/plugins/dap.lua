@@ -64,6 +64,27 @@ return {
             })
 
             -- --------------------------------------------------------
+            -- Adapter Kotlin (kotlin-debug-adapter)
+            -- --------------------------------------------------------
+            dap.adapters.kotlin = {
+                type    = "executable",
+                command = "kotlin-debug-adapter",
+                options = { auto_continue_if_many_stopped = false },
+            }
+
+            dap.configurations.kotlin = {
+                {
+                    type       = "kotlin",
+                    name       = "Debug: classe atual",
+                    request    = "launch",
+                    mainClass  = function()
+                        return vim.fn.input("Main class: ")
+                    end,
+                    projectRoot = "${workspaceFolder}",
+                },
+            }
+
+            -- --------------------------------------------------------
             -- DAP UI: interface visual
             -- --------------------------------------------------------
             dapui.setup({
