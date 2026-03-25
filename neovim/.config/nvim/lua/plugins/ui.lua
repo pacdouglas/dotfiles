@@ -186,7 +186,7 @@ return {
     -- ============================================================
     {
         "NStefan002/screenkey.nvim",
-        event = "VeryLazy",
+        cmd = "Screenkey",
         keys = {
             { "<leader>uk", "<cmd>Screenkey<cr>", desc = "Toggle Screenkey" },
         },
