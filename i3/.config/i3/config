@@ -79,7 +79,7 @@ exec --no-startup-id flameshot
 exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
 exec --no-startup-id ~/wallpapers/rotate.sh 300
 exec --no-startup-id xset s 300 5
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy-rapid 5 3
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.config/i3/lock.sh
 
 # ============================================================
 # KEYBINDINGS - programas
@@ -94,7 +94,7 @@ bindsym $mod+e exec $fileManager
 bindsym $mod+v floating toggle
 bindsym $mod+r exec $menu
 bindsym $mod+m fullscreen toggle
-bindsym $mod+Mod1+l exec i3lock-fancy-rapid 5 3
+bindsym $mod+Mod1+l exec ~/.config/i3/lock.sh
 
 # Screenshot (flameshot)
 bindsym Print exec --no-startup-id flameshot gui
