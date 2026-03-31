@@ -186,7 +186,9 @@ if command -v fzf &> /dev/null; then
     source <(fzf --zsh)
 fi
 
-eval $(keychain --eval --quiet ~/.ssh/github ~/.ssh/gitlab_kaffa)
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+    eval $(keychain --eval --quiet ~/.ssh/github ~/.ssh/gitlab_kaffa)
+fi
 
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     eval $(dbus-launch --sh-syntax)

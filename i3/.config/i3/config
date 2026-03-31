@@ -71,12 +71,14 @@ exec_always --no-startup-id setxkbmap us -variant intl
 # ============================================================
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Nautilus nao precisa de daemon
+exec --no-startup-id nm-applet
 exec --no-startup-id dunst
 exec --no-startup-id gnome-keyring-daemon --start --components=ssh
 exec --no-startup-id dropbox start
 exec --no-startup-id copyq
 exec --no-startup-id flameshot
-exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
+# picom gerenciado pelo power-monitor (troca config auto na bateria)
+exec --no-startup-id ~/.config/i3/power-monitor.sh
 exec --no-startup-id ~/wallpapers/rotate.sh 300
 exec --no-startup-id xset s 300 5
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.config/i3/lock.sh
