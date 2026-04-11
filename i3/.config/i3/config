@@ -71,7 +71,6 @@ exec_always --no-startup-id setxkbmap us -variant intl
 # ============================================================
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Nautilus nao precisa de daemon
-exec --no-startup-id nm-applet
 exec --no-startup-id dunst
 exec --no-startup-id gnome-keyring-daemon --start --components=ssh
 exec --no-startup-id dropbox start
