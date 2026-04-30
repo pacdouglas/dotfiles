@@ -67,6 +67,11 @@ client.background       #1e1e2e
 exec_always --no-startup-id setxkbmap us -variant intl
 
 # ============================================================
+# MONITORES - HDMI a direita do laptop
+# ============================================================
+exec_always --no-startup-id ~/.config/i3/monitors.sh
+
+# ============================================================
 # AUTOSTART
 # ============================================================
 exec_always --no-startup-id ~/.config/polybar/launch.sh
@@ -207,6 +212,10 @@ bindsym $mod+button5 workspace next
 # Mover workspace entre monitores
 bindsym $mod+Ctrl+h move workspace to output left
 bindsym $mod+Ctrl+l move workspace to output right
+
+# Mover apenas a janela focada entre monitores
+bindsym $mod+Ctrl+Shift+h move container to output left
+bindsym $mod+Ctrl+Shift+l move container to output right
 
 # ============================================================
 # MULTIMEDIA KEYS
